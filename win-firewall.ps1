@@ -9,38 +9,40 @@ param (
 # Ensure the NetSecurity module is imported
 Import-Module NetSecurity
 
-# Function to create the firewall rule
-function CreateFirewallRule {
+# Read the CSV and extract CIDRs
+$csvData = Import-Csv -Path $csvPath
+$cidrs = $csvData | ForEach-Object { $_."CIDR" }
+
+# Function to create or update the firewall rule
+function SetFirewallRule {
     param (
         [string]$protocol,
-        [string]$cidr,
+        [Array]$cidrList,
         [int]$port
     )
-    
-    $ruleName = "Allow $protocol $cidr Port $port"
+
+    $ruleName = "Allow $protocol Port $port for Specified CIDRs"
+
+    # Check if the rule exists
     $exists = Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue
 
     if (-not $exists) {
+        # If not, create a new rule
         New-NetFirewallRule -DisplayName $ruleName `
                             -Direction Inbound `
                             -LocalPort $port `
                             -Protocol $protocol `
                             -Action Allow `
-                            -RemoteAddress $cidr `
+                            -RemoteAddress $cidrList `
                             -Enabled True
         Write-Host "Created rule: $ruleName"
-    }
-    else {
-        Write-Host "Rule $ruleName already exists!"
+    } else {
+        # If exists, just update the remote address list
+        Set-NetFirewallRule -DisplayName $ruleName -RemoteAddress $cidrList
+        Write-Host "Updated rule: $ruleName"
     }
 }
 
-# Read the CSV and extract CIDRs
-$csvData = Import-Csv -Path $csvPath
-$cidrs = $csvData | ForEach-Object { $_."CIDR" }
-
-# For each CIDR, create a firewall rule for both TCP and UDP
-foreach ($cidr in $cidrs) {
-    CreateFirewallRule -protocol TCP -cidr $cidr -port $port
-    CreateFirewallRule -protocol UDP -cidr $cidr -port $port
-}
+# Create/Update the rule for both TCP and UDP
+SetFirewallRule -protocol TCP -cidrList $cidrs -port $port
+SetFirewallRule -protocol UDP -cidrList $cidrs -port $port
