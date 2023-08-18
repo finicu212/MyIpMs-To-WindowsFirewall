@@ -11,7 +11,11 @@ A comprehensive tool that fetches IP range tables from `myip.ms`, converts them 
 
 ### Convert IP Range to CIDR CSV
 
-First, use the provided Python script to convert the copy-pasted table from `myip.ms` to a CSV:
+First, copy paste use the desired IP ranges from myip.ms, as shown in the image, and save them as a `.txt` file:
+
+![saving ip ranges](https://github.com/finicu212/MyIpMs-To-WindowsFirewall/assets/44416281/e6492a7a-a6c0-4820-ad79-d32ca3125c97)
+
+Then, use the provided Python script to convert the copy-pasted table from `myip.ms` to a CSV:
 
 ```bash
 python myipms-to-csv.py input.txt
@@ -33,6 +37,8 @@ On a Windows system, use the provided PowerShell script to apply inbound rules:
 ```
 Replace path_to_csv_file.csv with the path to your CSV file, and adjust the port as needed.
 Linux
+
+## Linux
 
 On a Linux system, use the provided Bash script to apply iptables rules. Remember to chmod to make it executable:
 
