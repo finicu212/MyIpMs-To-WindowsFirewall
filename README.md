@@ -33,7 +33,7 @@ Start IP,End IP,CIDR,Number of IPs
 On a Windows system, use the provided PowerShell script to apply inbound rules:
 
 ```powershell
-.\firewall_script.ps1 -csvPath "path_to_csv_file.csv" -port 25565
+.\win-firewall.ps1 -csvPath "output.csv" -port 25565
 ```
 Replace path_to_csv_file.csv with the path to your CSV file, and adjust the port as needed.
 Linux
@@ -43,6 +43,6 @@ Linux
 On a Linux system, use the provided Bash script to apply iptables rules. Remember to chmod to make it executable:
 
 ```bash
-chmod +x firewall_script.sh
-sudo ./firewall_script.sh path_to_csv_file.csv 25565
+chmod +x linux-iptables.sh
+sudo ./linux-iptables.sh output.csv 25565
 ```
