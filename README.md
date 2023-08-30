@@ -2,6 +2,9 @@
 
 A comprehensive tool that fetches IP range tables from `myip.ms`, converts them to CIDR notation in CSV format, and provides automation scripts for creating inbound rules on both Windows and Linux firewalls.
 
+![image](https://github.com/finicu212/MyIpMs-To-WindowsFirewall/assets/44416281/b67473a5-7652-4932-b95c-780cc9812643)
+
+
 ## Features
 
 - Convert `myip.ms` IP ranges to a CIDR-formatted CSV.
